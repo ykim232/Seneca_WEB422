@@ -12,21 +12,24 @@
 const express = require("express");
 const app = express();
 const cors = require('cors');
+const path = require('path');
+
+app.use(cors());
+app.use(express.json());
+
 const BodyParser = require('body-parser');
+app.use(BodyParser.json());
 const HTTP_PORT = process.env.PORT || 8080;
 
-/* refer to other best student */
 const { celebrate, Joi, errors, Segments } = require('celebrate');
-app.use(BodyParser.json());
-
 
 const RestaurantDB = require("./modules/restaurantDB.js");
-const { path } = require("express/lib/application");
 const db = new RestaurantDB();
 
 require("dotenv").config({ path: "./config/config.env" });
 
-db.initialize(`mongodb+srv://${process.env.dbUser}:${process.env.dbPass}@cluster0-apgkj.mongodb.net/${process.env.dbName}?retryWrites=true&w=majority`).then(() => {
+db.initialize(`mongodb+srv://${process.env.dbUser}:${process.env.dbPass}@cluster0-apgkj.mongodb.net/${process.env.dbName}?retryWrites=true&w=majority`)
+.then(() => {
   app.listen(HTTP_PORT, () => {
     console.log(`server listening on: ${HTTP_PORT}`);
   });
@@ -34,29 +37,17 @@ db.initialize(`mongodb+srv://${process.env.dbUser}:${process.env.dbPass}@cluster
   console.log(err);
 });
 
-app.use(cors());
-app.use(express.json());
-
 // ------------------------------------------------------------------------------------------
 
 app.post("/api/restaurants",(req, res) => {
     db.addNewRestaurant(req.body)
-      .then((restaurants) => {
-        res.status(201).json(restaurants);
+      .then(() => {
+        res.status(201).json("New restaurant added!");
       })
       .catch((err) => {
         res.status(500).json(`Error has occured : ${err}`);
       });
   });
-
-app.use((error, req, res, next) => {
-  if (error.joi) {
-    return res.status(400).json({
-      error: error.joi.message
-    });
-  }
-  return res.status(500).send(error)
-})
 
 app.get("/api/restaurants", celebrate({
   [Segments.QUERY]: Joi.object().keys({
@@ -74,6 +65,14 @@ app.get("/api/restaurants", celebrate({
     });
 });
 
+app.use((error, req, res, next) => {
+  if (error.joi) {
+    return res.status(400).json({
+      error: error.joi.message
+    });
+  }
+  return res.status(500).send(error)
+})
 
 app.get("/api/restaurants/:_id", (req, res) => {
   db.getRestaurantById(req.params._id)
@@ -107,5 +106,5 @@ app.delete("/api/restaurants/:_id", (req, res) => {
 });
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '/index.html'));
+  console.log('Connected...!');
 })
