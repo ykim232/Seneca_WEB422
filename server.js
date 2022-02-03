@@ -19,7 +19,7 @@ app.use(express.json());
 
 const BodyParser = require('body-parser');
 app.use(BodyParser.json());
-const HTTP_PORT = process.env.PORT || 8080;
+// const HTTP_PORT = process.env.PORT || 8080;
 
 const { celebrate, Joi, errors, Segments } = require('celebrate');
 
@@ -30,8 +30,8 @@ require("dotenv").config({ path: "./config/config.env" });
 
 db.initialize(`mongodb+srv://${process.env.dbUser}:${process.env.dbPass}@cluster0-apgkj.mongodb.net/${process.env.dbName}?retryWrites=true&w=majority`)
 .then(() => {
-  app.listen(HTTP_PORT, () => {
-    console.log(`server listening on: ${HTTP_PORT}`);
+  app.listen(() => {
+    console.log(`server listening`);
   });
 }).catch((err) => {
   console.log(err);
