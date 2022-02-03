@@ -52,7 +52,7 @@ app.post("/api/restaurants",(req, res) => {
 
 app.get("/api/restaurants", celebrate({
   [Segments.QUERY]: Joi.object().keys({
-    page: Joi.string().required(),
+    page: Joi.number().required(),
     perPage: Joi.number().required(),
     borough: Joi.string().required()
   })
@@ -89,7 +89,7 @@ app.get("/api/restaurants/:_id", (req, res) => {
 app.put("/api/restaurants/:_id", (req, res) => {
   db.updateRestaurantById(req.body, req.params._id)
     .then(() => {
-      res.status(200).json(`Restaurant ${req.body._id} successfully updated`);
+      res.status(200).json(`Restaurant (${req.params._id}) successfully updated`);
     })
     .catch((err) => {
       res.status(500).json(`Error has occured : ${err}`);
@@ -99,7 +99,7 @@ app.put("/api/restaurants/:_id", (req, res) => {
 app.delete("/api/restaurants/:_id", (req, res) => {
   db.deleteRestaurantById(req.params._id)
     .then(() => {
-      res.status(200).json(`Restaurant ${req.params._id} successfully deleted`);
+      res.status(200).json(`Restaurant (${req.params._id}) successfully deleted`);
     })
     .catch((err) => {
       res.status(500).json(`Error has occured : ${err}`);
