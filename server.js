@@ -39,14 +39,7 @@ app.use(express.json());
 
 // ------------------------------------------------------------------------------------------
 
-app.post("/api/restaurants", celebrate({
-  [Segments.QUERY]: Joi.object().keys({
-    page: Joi.string().required(),
-    perPage: Joi.number().required(),
-    borough: Joi.string().required()
-  })
-}),
-  (req, res) => {
+app.post("/api/restaurants",(req, res) => {
     db.addNewRestaurant(req.body)
       .then((restaurants) => {
         res.status(201).json(restaurants);
@@ -65,7 +58,13 @@ app.use((error, req, res, next) => {
   return res.status(500).send(error)
 })
 
-app.get("/api/restaurants", (req, res) => {
+app.get("/api/restaurants", celebrate({
+  [Segments.QUERY]: Joi.object().keys({
+    page: Joi.string().required(),
+    perPage: Joi.number().required(),
+    borough: Joi.string().required()
+  })
+}), (req, res) => {
   db.getAllRestaurants(req.query.page, req.query.perPage, req.query.borough)
     .then((restaurants) => {
       res.status(200).json(restaurants);
