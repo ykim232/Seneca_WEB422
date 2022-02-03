@@ -106,5 +106,5 @@ app.delete("/api/restaurants/:_id", (req, res) => {
 });
 
 app.get('/', (req, res) => {
-  console.log('Connected...!');
+  res.sendFile(path.join(__dirname, "./index.html"))
 })
