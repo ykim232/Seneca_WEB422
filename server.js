@@ -30,7 +30,7 @@ require("dotenv").config({ path: "./config/config.env" });
 
 db.initialize(`mongodb+srv://${process.env.dbUser}:${process.env.dbPass}@cluster0-apgkj.mongodb.net/${process.env.dbName}?retryWrites=true&w=majority`)
 .then(() => {
-  app.listen(() => {
+  app.listen(process.env.PORT, () => {
     console.log(`server listening`);
   });
 }).catch((err) => {

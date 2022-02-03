@@ -55,8 +55,8 @@ module.exports = class RestaurantDB {
     getAllRestaurants(page, perPage, borough) { 
         let findBy = borough ? { borough } : {};
 
-        if(page && perPage){
-            return this.Restaurant.find(findBy).sort({restaurant_id: +1}).skip((page - 1) * perPage).limit(perPage).exec();
+        if(+page && +perPage){
+            return this.Restaurant.find(findBy).sort({restaurant_id: +1}).skip((page - 1) * +perPage).limit(+perPage).exec();
         }
         
         return Promise.reject(new Error('page and perPage query parameters must be valid numbers'));
