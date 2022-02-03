@@ -5,85 +5,108 @@
 * (including web sites) or distributed to other students.
 *
 * Name: Yuli kim         Student ID: 160437174       Date: Jan 20, 2022
-* Heroku Link: _______________________________________________________________
+* Heroku Link: https://web422-as-1.herokuapp.com/
 *
-********************************************************************************/ 
+********************************************************************************/
 
 const express = require("express");
 const app = express();
 const cors = require('cors');
+const BodyParser = require('body-parser');
 const HTTP_PORT = process.env.PORT || 8080;
-const path = require('path');
+
+/* refer to other best student */
+const { celebrate, Joi, errors, Segments } = require('celebrate');
+app.use(BodyParser.json());
+
 
 const RestaurantDB = require("./modules/restaurantDB.js");
+const { path } = require("express/lib/application");
 const db = new RestaurantDB();
 
-db.initialize("mongodb+srv://ykim2323:gusdn0649@web422yuli.mhhdx.mongodb.net/web422yuli?retryWrites=true&w=majority").then(()=>{
-  app.listen(HTTP_PORT, ()=>{
-  console.log(`server listening on: ${HTTP_PORT}`);
+require("dotenv").config({ path: "./config/config.env" });
+
+db.initialize(`mongodb+srv://${process.env.dbUser}:${process.env.dbPass}@cluster0-apgkj.mongodb.net/${process.env.dbName}?retryWrites=true&w=majority`).then(() => {
+  app.listen(HTTP_PORT, () => {
+    console.log(`server listening on: ${HTTP_PORT}`);
   });
- }).catch((err)=>{
+}).catch((err) => {
   console.log(err);
- });
+});
 
 app.use(cors());
 app.use(express.json());
 
-app.get('/', (req, res) => {
-    res.json([{message: "API Listening"}]);
-})
-
 // ------------------------------------------------------------------------------------------
 
-app.post("/api/restaurants", (req,res) => {
-  db.addNewRestaurant(req.body)
-  .then(() => {
-          res.status(201).json(`new Restaurant successfully added`);
+app.post("/api/restaurants", celebrate({
+  [Segments.QUERY]: Joi.object().keys({
+    page: Joi.string().required(),
+    perPage: Joi.number().integer(),
+    borough: Joi.string().default('admin')
+  })
+}),
+  (req, res) => {
+    db.addNewRestaurant(req.body)
+      .then((restaurants) => {
+        res.status(201).json(restaurants);
       })
       .catch((err) => {
         res.status(500).json(`Error has occured : ${err}`);
       });
-});
+  });
 
+app.use((error, req, res, next) => {
+  if (error.joi) {
+    return res.status(400).json({
+      error: error.joi.message
+    });
+  }
+  return res.status(500).send(error)
+})
 
-app.get("/api/restaurants", (req,res) => {
+app.get("/api/restaurants", (req, res) => {
   db.getAllRestaurants(req.query.page, req.query.perPage, req.query.borough)
-      .then((restaurants) => {
-          res.status(200).json(restaurants);
-      }) 
-      .catch((err) => {
-        res.status(500).json(`Error has occured : ${err}`);
-      });
+    .then((restaurants) => {
+      res.status(200).json(restaurants);
+    })
+    .catch((err) => {
+      res.status(500).json(`Error has occured : ${err}`);
+    });
 });
 
 
-app.get("/api/restaurants/:_id", (req,res) => {
+app.get("/api/restaurants/:_id", (req, res) => {
   db.getRestaurantById(req.params._id)
-      .then((restaurants) => {
-          res.status(200).json(restaurants);
-      })
-      .catch((err) => {
-        res.status(500).json(`Error has occured : ${err}`);
-      });
+    .then((restaurants) => {
+      res.status(200).json(restaurants);
+    })
+    .catch((err) => {
+      res.status(500).json(`Error has occured : ${err}`);
+    });
 });
 
 
-app.put("/api/restaurants/:_id", (req,res) => {
+app.put("/api/restaurants/:_id", (req, res) => {
   db.updateRestaurantById(req.body, req.params._id)
-      .then(() => {
-          res.status(200).json(`Restaurant ${req.body._id} successfully updated`);
-      })
-      .catch((err) => {
-          res.status(500).json(`Error has occured : ${err}`);
-      });
+    .then(() => {
+      res.status(200).json(`Restaurant ${req.body._id} successfully updated`);
+    })
+    .catch((err) => {
+      res.status(500).json(`Error has occured : ${err}`);
+    });
 });
 
-app.delete("/api/restaurants/:_id", (req,res) => {
+app.delete("/api/restaurants/:_id", (req, res) => {
   db.deleteRestaurantById(req.params._id)
-      .then(() => {
-          res.status(200).json(`Restaurant ${req.params._id} successfully deleted`);
-      })
-      .catch((err) => {
-          res.status(500).json(`Error has occured : ${err}`);
-      });
+    .then(() => {
+      res.status(200).json(`Restaurant ${req.params._id} successfully deleted`);
+    })
+    .catch((err) => {
+      res.status(500).json(`Error has occured : ${err}`);
+    });
 });
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '/index.html'));
+})
