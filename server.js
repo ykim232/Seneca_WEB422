@@ -42,8 +42,8 @@ app.use(express.json());
 app.post("/api/restaurants", celebrate({
   [Segments.QUERY]: Joi.object().keys({
     page: Joi.string().required(),
-    perPage: Joi.number().integer(),
-    borough: Joi.string().default('admin')
+    perPage: Joi.number().required(),
+    borough: Joi.string().required
   })
 }),
   (req, res) => {
