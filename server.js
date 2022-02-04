@@ -29,7 +29,7 @@ const db = new RestaurantDB();
 require("dotenv").config({ path: "./config/config.env" });
 
 // db.initialize(`mongodb+srv://${process.env.dbUser}:${process.env.dbPass}@cluster0-apgkj.mongodb.net/${process.env.dbName}?retryWrites=true&w=majority`)
-db.initialize(`mongodb+srv://ykim2323:gusdn0649@web422yuli.mhhdx.mongodb.net/sample_restaurnants?retryWrites=true&w=majority`)
+db.initialize("mongodb+srv://ykim2323:gusdn0649@web422yuli.mhhdx.mongodb.net/sample_restaurants?retryWrites=true&w=majority")
 .then(() => {
   app.listen(process.env.PORT, () => {
     console.log(`server listening`);
