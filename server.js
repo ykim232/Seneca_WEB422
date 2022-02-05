@@ -59,7 +59,7 @@ app.get("/api/restaurants", celebrate({
 }), (req, res) => {
   db.getAllRestaurants(req.query.page, req.query.perPage, req.query.borough)
     .then((restaurants) => {
-      res.status(200).json(restaurants).sort(restaurant_id);
+      res.status(200).json(restaurants).sort(restaurants.restaurant_id);
     })
     .catch((err) => {
       res.status(500).json(`Error has occured : ${err}`);
