@@ -54,7 +54,7 @@ app.get("/api/restaurants", celebrate({
   [Segments.QUERY]: Joi.object().keys({
     page: Joi.number().required(),
     perPage: Joi.number().required(),
-//     borough: Joi.string().required()
+    borough: Joi.string()
   })
 }), (req, res) => {
   db.getAllRestaurants(req.query.page, req.query.perPage, req.query.borough)
