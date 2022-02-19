@@ -18,7 +18,7 @@ function App() {
   const handleSubmit = function (e) {
     e.preventDefault();
     navigate(`/restaurants?borough=${searchString}`);
-    this.setState({ searchString: "" });
+    setSearchString("" );
   }
 
   return (

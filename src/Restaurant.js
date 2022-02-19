@@ -12,19 +12,22 @@
 // export default Restaurant;
 
 import { MapContainer, TileLayer, Marker } from 'react-leaflet';
+import { useParams } from 'react-router-dom';
 import {useState, useEffect} from 'react';
 import {Card, CardGroup} from 'react-bootstrap';
 import moment from 'moment';
 
-export default function Restaurant (props) {
-    const restaurantAPI = "https://guarded-mountain-04743.herokuapp.com/api/restaurants";
+export default function Restaurant() {
+    const restaurantAPI = "https://web422-as-1.herokuapp.com/api/restaurants";
 
     const [ restaurant, setRestaurant] = useState(null);
     const [ loading, setLoading ] = useState(true);
 
+    let params = useParams(); 
+
     useEffect(()=>{
         setLoading(true);
-        fetch(`${restaurantAPI}/${props.id}`)
+        fetch(`${restaurantAPI}/${params}`)
         .then(res => res.json())
         .then(data => {
             setLoading(false);
@@ -34,7 +37,7 @@ export default function Restaurant (props) {
                 setRestaurant(null);
             }
         });
-    },[props.id]);
+    },[params]);
 
     if(!loading) {
         if(!restaurant) {
@@ -42,7 +45,7 @@ export default function Restaurant (props) {
                 <Card className="mt-4">                
                     <Card.Body>                    
                         <Card.Text>
-                            Cannot find Restaurant with id: {props.id}
+                            Cannot find Restaurant with id: {params}
                         </Card.Text>                                        
                     </Card.Body>
                  </Card>
