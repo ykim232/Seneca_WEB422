@@ -3,7 +3,6 @@
 
 import { useLocation } from 'react-router-dom';
 import {useState, useEffect} from 'react';
-// import queryString from 'query-string';
 import {Card, Table, Pagination} from 'react-bootstrap';
 import {useNavigate} from 'react-router-dom';
 
@@ -18,24 +17,22 @@ export default function Restaurants() {
     let navigate = useNavigate();    
     let location = useLocation();
     const urlParams = new URLSearchParams(location.search);
-    const perPage = 10; 
+    // const perPage = 10; 
     
-    // const borough = queryString.parse(location).borough;
-    let uri = borough ? `${restaurantAPI}?page=${page}&perPage=10&borough=${borough}` : `${restaurantAPI}?page=${page}&perPage=${perPage}`;
-    const previousPage = ()=> {if (page > 1) setPage(navigate(-1))};
-    const nextPage = () => setPage(navigate(+1)); 
+    let uri = borough ? `${restaurantAPI}?page=${page}&perPage=10&borough=${borough}` : `${restaurantAPI}?page=${page}&perPage=10`;
+    const previousPage = ()=> {if (page > 1) setPage(page-1)};
+    const nextPage = () => setPage(page+1); 
 
     useEffect(()=>{               
         fetch(uri)
         .then(res => res.json())
         .then((result)=>{       
             setRestaurants(result);      
-            // setPage(urlParams.page());
-            setPage(5);
+            setPage(page);
             setBorough(urlParams.get("borough"));
             
         });
-    },[location, page]);
+    },[location, page, borough]);
 
     if (restaurants && restaurants.length > 0) {
         return (
@@ -61,7 +58,7 @@ export default function Restaurants() {
                 <tbody>
                     {
                         restaurants.map(restaurant=>(
-                            <tr onClick={()=>{ navigate(`/restaurant/${restaurant._id}`)}} key={restaurant._id}>
+                            <tr key={restaurant._id} onClick={()=>{ navigate(`/restaurant/id=${restaurant._id}`)}}>
                                 <td>{restaurant.name}</td>
                                 <td>{restaurant.address.building} {restaurant.address.street}</td>
                                 <td>{restaurant.borough}</td>
@@ -87,20 +84,21 @@ export default function Restaurants() {
             <Card className="mt-3">                
                 <Card.Body>                        
                     <Card.Text>
-                        Loading Restaurants...
+                        No Restaurants Found
                     </Card.Text>                                       
                 </Card.Body>
             </Card>
-        );       
-    }
-    
+            ); 
+    } 
+        
     return(
         <Card className="mt-3">                
             <Card.Body>                        
                 <Card.Text>
-                    No Restaurants Found
+                    Loading Restaurants...
                 </Card.Text>                                       
             </Card.Body>
         </Card>
-    );                 
+    );  
+    
 }
