@@ -2,7 +2,7 @@ import './App.css';
 import React, { useState } from 'react';
 
 import { Button, Col, Container, Form, FormControl, Nav, Navbar, Row } from 'react-bootstrap';
-import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import { LinkContainer } from 'react-router-bootstrap';
 
 import Restaurants from './Restaurants';
@@ -17,8 +17,8 @@ function App() {
 
   const handleSubmit = function (e) {
     e.preventDefault();
-    navigate(`/restaurants?borough=${searchString}`);
-    this.setState({ searchString: "" });
+    navigate(`/restaurants?${sborough=earchString}`);
+    setSearchString("");
   }
 
   return (
