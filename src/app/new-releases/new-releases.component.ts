@@ -6,13 +6,9 @@ import data from '../data/NewReleasesAlbums.json';
   templateUrl: './new-releases.component.html',
   styleUrls: ['./new-releases.component.css']
 })
-export class NewReleasesComponent implements OnInit {
+export class NewReleasesComponent {
   releases : any;
 
   constructor() { this.releases = data.albums.items; }
 
-  ngOnInit(): void {
-  }
-
-  getReleases() : any {return this.releases;}
 }
