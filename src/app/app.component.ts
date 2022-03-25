@@ -6,9 +6,10 @@
 *
 * Name: Yuli Kim            Student ID: 160437174          Date: Mar 09, 2022
 *
-********************************************************************************/ 
+********************************************************************************/
 
 import { Component } from '@angular/core';
+import { NavigationStart, Router, Event } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -17,4 +18,15 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'web422-a4';
+  searchString: string | undefined;
+
+  constructor(private router: Router) { }
+
+
+
+  handleSearch(): void {
+    this.router.navigate(['/search'], { queryParams: { q: this.searchString } });
+    this.searchString = "";
+  }
 }
+

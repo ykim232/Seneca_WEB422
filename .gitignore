@@ -1,5 +1,9 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
+# Spotify authentication information 
+Client ID 170d6e53b8e24301b25f79786165e2d0
+Client Secret 4d6f62a3c205476fa2bfa8fb7f67b49f
+
 # Compiled output
 /tmp
 /out-tsc

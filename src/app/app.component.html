@@ -1,10 +1,10 @@
 /*********************************************************************************
-* WEB422 – Assignment 04
+* WEB422 – Assignment 05
 * I declare that this assignment is my own work in accordance with Seneca Academic Policy. No part of this
 * assignment has been copied manually or electronically from any other source (including web sites) or
 * distributed to other students.
 *
-* Name: Yuli Kim            Student ID: 160437174          Date: Mar 09, 2022
+* Name: Yuli Kim            Student ID: 160437174          Date: Mar 24, 2022
 *
 ********************************************************************************/ 
 
@@ -50,7 +50,8 @@
         <div>
           <mat-form-field appearance="fill">
             <mat-label>Artist</mat-label>
-            <input matInput type="text">
+            <form (ngSubmit)='handleSearch()'><input matInput type="text" name="searchString"
+              [(ngModel)]='searchString'></form>
             <mat-icon matSuffix>search</mat-icon>
           </mat-form-field>
         </div>
@@ -63,9 +64,9 @@
           <p mat-line> New Releases </p>
         </a>
 
-        <a mat-list-item>
+        <a mat-list-item routerLink="/favourites" routerLinkActive="active">
           <mat-icon mat-list-icon>
-            favorite
+            favorites
           </mat-icon>
           <p mat-line> Favourites </p>
         </a>
@@ -90,6 +91,7 @@
       <!-- <app-not-found></app-not-found> -->
       <!-- <app-new-releases></app-new-releases> -->
       <!-- <app-album></app-album> -->
+      <!-- <app-favourites></app-favourites> -->
       <!-- <app-artist-discography></app-artist-discography> -->
       <router-outlet></router-outlet>
       <!-- ------------ -->

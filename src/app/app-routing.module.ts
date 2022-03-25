@@ -7,11 +7,17 @@ import { NewReleasesComponent } from './new-releases/new-releases.component';
 import { ArtistDiscographyComponent } from './artist-discography/artist-discography.component';
 import { AlbumComponent } from './album/album.component';
 
+import { SearchResultComponent } from './search-result/search-result.component';
+import { FavouritesComponent } from './favourites/favourites.component';
+
 const routes: Routes = [
   {path: "newReleases", component: NewReleasesComponent},
-  {path: "artist", component: ArtistDiscographyComponent},
-  {path: "album", component:AlbumComponent},
+  {path: "album/:id", component:AlbumComponent},
+  {path: "artist/:id", component: ArtistDiscographyComponent},
   {path: "about", component: AboutComponent},
+
+  {path: "search", component: SearchResultComponent},
+  {path: "favourites", component: FavouritesComponent},
   {path: "", redirectTo: "/newReleases", pathMatch: "full"},
   {path: "**", component: NotFoundComponent}
 ];
