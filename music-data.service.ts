@@ -73,5 +73,4 @@ export class MusicDataService {
   }
 }
 
-
 // instruction: GO to album.component.ts

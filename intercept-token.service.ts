@@ -16,8 +16,6 @@ export class InterceptTokenService implements HttpInterceptor{
       // clone the request and use the "setHeaders" property to set an "Authorization" header
       request = request.clone({
         setHeaders: {
-    // This will ensure that we only set the "JWT" authorization for requests going to our User API 
-    // and all requests going to spotify.com will continue to use the "Bearer" authorization
           Authorization: `JWT ${this.authService.getToken()}`
         }
       });
@@ -26,4 +24,4 @@ export class InterceptTokenService implements HttpInterceptor{
   }
 }
 
-// GO TO app.module.ts > providers array
+// Instruction: GO TO app.module.ts > providers array

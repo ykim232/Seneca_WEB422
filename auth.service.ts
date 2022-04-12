@@ -28,6 +28,7 @@ export class AuthService {
     return (this.getToken()) ? true : false;
   }
 
+  // sending the user data via a POST request
   login(user: User): Observable<any> {
     return this.http.post<any>(`${environment.userAPIBase}/login`, user);
   }
